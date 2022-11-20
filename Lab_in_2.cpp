@@ -18,14 +18,24 @@ std::vector<double> calculate_a(double x1, double x2, double x3, double y1, doub
 double get_element(std::string name) {
     std::string str = "";
     bool state = true;
+    double test;
+    std::size_t pos{};
     std::cout << "Enter the " << name << ": ";
     while (state) {
         getline(std::cin, str);
-        if (str.find_first_not_of("-.1234567890") != -1 || (str.empty())) {
-            std::cout << "You entered the wrong value. Enter it again: " << std::endl;
-        } else state = false;
+        try{
+            test=stod(str,&pos);
+            if (pos!=str.size()){
+                std::cerr << "Argument is invalid\n";
+                throw std::invalid_argument("Argument is invalid\n") ;
+            }
+            state=false;
+        }
+        catch (const std::invalid_argument&){
+            std::cout<<"Argument is invalid\n";
+        }
     }
-    return stod(str);
+    return test;
 }
 
 int main() {
@@ -38,11 +48,10 @@ int main() {
         double y2 = get_element("y2");
         double x3 = get_element("x3");
         double y3 = get_element("y3");
-        std::cout << x1 << x2 << x3 << y1 << y2 << y3 << std::endl;
         arr = calculate_a(x1, x2, x3, y1, y2, y3);
         std::cout << "y=" << std::noshowpos << arr[0] << "x^2" << std::showpos << arr[1] << "x" << std::showpos
                   << arr[2] << std::endl;
-        std::cout << "To exit, type 'Exit'. If you want to continue, press Enter. " << std::endl;
+        std::cout << "To exit, type 'Exit'. If you want to continue, type anything else. type anything else. " << std::endl;
         getline(std::cin, ex);
     }
     return 0;
