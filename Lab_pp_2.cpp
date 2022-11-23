@@ -4,9 +4,8 @@
 #include <string>
 
 
-using namespace std;
+/*using namespace std;
 //Первая версия-----------------------------------------------------------------
-/*
 // Проверка на целое число
 double check_double() {
     string str1 = "";
@@ -183,27 +182,77 @@ int main() {
 
 //Вторая версия-----------------------------------------------------------------
 double input_double() {
-    string str_number;
-    bool state=true;
-    cout<<"::"<<endl;
-    while (state) {
-        getline(cin,str_number);
-        if (str_number.find_first_not_of("-.1234567890") != -1 || (str_number.empty())||stod(str_number)) {
-            cout << "You entered the wrong value. Enter it again:" << endl;
+    std::string str = "";
+    bool state = true;
+    double number;
+    std::size_t pos{};
 
-        }else state = false;
+    std::cout << "Enter the integer: ";
+
+    while (state) {
+        getline(std::cin, str);
+        try {
+            number = stod(str, &pos);
+            if (pos != str.size()) {
+                std::cerr << "Argument is invalid\n";
+                throw std::invalid_argument("Argument is invalid\n");
+            }
+            state = false;
+        }
+        catch (const std::invalid_argument &) {
+            std::cout << "Argument is invalid\n";
+        }
     }
     return number;
 }
 
 
-int check_integer() {
+double long calculat_An(long double x, int n){
+    long double buffer1=0;
+    long double buffer2=1;
+    for (int i=1;i<=n;++i){
+        buffer1+=1.0/n;
+        buffer2*=x;
+    }
+    return ((n-1)%2==0?1:-1)*buffer1*buffer2;
+}
+long double Sum_n(long double x, int n,){
 
+
+}
+
+long double error(long double An,long double Sn){
+
+
+}
+
+int check_integer() {
+    std::string str = "";
+    bool state = true;
+    double number;
+    std::size_t pos{};
+
+    std::cout << "Enter the integer: ";
+
+    while (state) {
+        getline(std::cin, str);
+        try {
+            number = stoi(str, &pos);
+            if (pos != str.size()) {
+                std::cerr << "Argument is invalid\n";
+                throw std::invalid_argument("Argument is invalid\n");
+            }
+            state = false;
+        }
+        catch (const std::invalid_argument &) {
+            std::cout << "Argument is invalid\n";
+        }
+    }
     return number;
 }
 
-vector<long double>
-array_add(vector<long double> array, long double x, int n, long double Sn, long double S, long double a) {
+std::vector<long double>
+array_add(std::vector<long double> array, long double x, int n, long double Sn, long double S, long double a) {
     array.push_back(x);
     array.push_back(n);
     array.push_back(Sn);

@@ -1,5 +1,4 @@
 #include <iostream>
-#include <iomanip>
 #include <string>
 #include <cstdlib>
 #include <vector>
@@ -8,22 +7,30 @@ using namespace std;
 
 // Проверка на целое число
 int get_size() {
-    string str1 = "";
-    getline(cin, str1);// Ввод строки
-    // Проверка. Если строка содержит не только цифры, то ошибка
-    if (str1.find_first_not_of("1234567890") != -1) {
-        cout << "Вы ввели неправильное значение. Введите его еще раз:" << endl;
-        return get_size();
-    } else {
-        int str_i = stoi(str1);// Преобразование строки в int
-        // Проверка на положительное число
-        if (str_i < 2) {
-            cout << "Вы ввели слишком маленькое значение. Введите его еще раз:" << endl;
-            return get_size();
-        } else {
-            return str_i;
+    std::string str = "";
+    bool state = true;
+    double number;
+    std::size_t pos{};
+
+    std::cout << "Enter the size of the array: ";
+
+    while (state) {
+        getline(std::cin, str);
+
+        try {
+            number = stoi(str, &pos);
+
+            if (pos != str.size() ||  number < 2) {
+                //std::cerr << "1\n";
+                throw std::invalid_argument("Argument is invalid\n");
+            }
+            state = false;
+        }
+        catch (...) {
+            std::cout << "You entered the wrong value. Enter it again: ";
         }
     }
+    return number;
 }
 
 vector<int> array_filling(int size_array) {
@@ -133,38 +140,38 @@ vector<int> merge_sort(vector<int> array_first, vector<int> array_second) {
 
 vector<int> merge(vector<int> array, int begin, int end) {
     int mi = (end + begin) / 2;
-    //cout << begin <<" "<< end <<" "<< mi << endl;
-    if (begin == end) return {array[begin]};
-    else return merge_sort(merge(array, begin, mi), merge(array, mi + 1, end));
+
+    if (begin == end)
+        return {array[begin]};
+    else
+        return merge_sort(merge(array, begin, mi), merge(array, mi + 1, end));
 }
 
 
 int main() {
-    setlocale(LC_ALL, "Russian");
     string ex = "";
     while (ex != "Exit") {
-        cout << "Пожалуйста, введите количество выводимых элементов: " << endl;
-        int limit = get_size();
-        cout << "Пожалуйста, введите количество элементов в массиве: " << endl;
+        vector<int> arr = {};
         int size_array = get_size();
-        vector<int> arr = array_filling(size_array);
+        arr = array_filling(size_array);
+        int limit = 20 < arr.size() ? 20 : arr.size();
 
         limit = limit < arr.size() ? limit : arr.size();
-        cout << "Изначальный массив" << endl;
-        for (int i = 0; i < arr.size(); ++i) {
+        cout << "Initial array" << endl;
+        for (int i = 0; i < limit; ++i) {
             cout << arr[i] << "    ";
         }
-        cout << endl << "Отсортированный массив" << endl;
+        cout << endl << "Sorted array by merge" << endl;
         arr = merge(arr, 0, arr.size() - 1);
 
 
         //arr = merge({1,2,3,4}, 0, arr.size() - 1);
 
-        for (int i = 0; i < arr.size(); ++i) {
+        for (int i = 0; i < limit; ++i) {
             cout << arr[i] << "    ";
         }
 
-        cout << "Для выхода введите 'Exit'. Если хотите продолжить нажмите Enter. " << endl;
+        cout << endl << "To exit, type 'Exit'. If you want to continue, type anything else. " << endl;
         getline(cin, ex);// Ввод слова при необходимости выхода
     }
     return 0;

@@ -35,30 +35,59 @@ vector<int> merge(vector<int> array, int begin, int end) {
 
 // Проверка на целое число
 int get_size() {
-    string str = "";
+    std::string str = "";
     bool state = true;
+    int  number;
+    std::size_t pos{};
+
     std::cout << "Enter the size of the array: ";
+
     while (state) {
-        getline(cin, str);
-        if (str.find_first_not_of("1234567890") != -1 || (str.empty()) || stoi(str) < 2) {
-            cout << "You entered the wrong value. Enter it again: " << endl;
-        } else state = false;
+        getline(std::cin, str);
+
+        try {
+            number = stoi(str, &pos);
+
+            if (pos != str.size() || number < 2) {
+                //std::cerr << "1\n";
+                throw std::invalid_argument("Argument is invalid\n");
+            }
+            state = false;
+        }
+        catch (...) {
+            std::cout << "You entered the wrong value. Enter it again: ";
+        }
     }
-    return stoi(str);
+    return number;
 }
 
 int get_element() {
-    string str = "";
+    std::string str = "";
     bool state = true;
+    double number;
+    std::size_t pos{};
+
     std::cout << "Enter the element of the array: ";
+
     while (state) {
-        getline(cin, str);
-        if (str.find_first_not_of("1234567890") != -1 || (str.empty())) {
-            cout << "You entered the wrong value. Enter it again: " << endl;
-        } else state = false;
+        getline(std::cin, str);
+
+        try {
+            number = stoi(str, &pos);
+
+            if (pos != str.size()) {
+                //std::cerr << "1\n";
+                throw std::invalid_argument("Argument is invalid. ");
+            }
+            state = false;
+        }
+        catch (...) {
+            std::cout << "You entered the wrong value. Enter it again: ";
+        }
     }
-    return stoi(str);
+    return number;
 }
+
 
 char get_method() {
     string str = "";
@@ -67,7 +96,7 @@ char get_method() {
     while (state) {
         getline(cin, str);
         if (!(str == "r" || str == "n" || str == "m") || str.empty()) {
-            cout << "You entered the wrong value. Enter it again: " ;
+            cout << "You entered the wrong value. Enter it again: ";
         } else state = false;
     }
     return str == "r" ? 'r' : str == "n" ? 'n' : 'm';
@@ -184,11 +213,10 @@ int main() {
     using std::chrono::milliseconds;
     string ex = "";
     while (ex != "Exit") {
-        vector<int> arr={};
+        vector<int> arr = {};
         int size_array = get_size();
         char method = get_method();
         arr = array_filling(arr, size_array, method);
-
         int limit = 20 < arr.size() ? 20 : arr.size();
 
         cout << "Initial array" << endl;
@@ -199,30 +227,30 @@ int main() {
         auto start_merge = high_resolution_clock::now();
         vector<int> arr_merge = merge(arr, 0, arr.size() - 1);
         auto this_merge = high_resolution_clock::now();
-        duration<double, std::milli> time_merge =this_merge - start_merge;
+        duration<double, std::milli> time_merge = this_merge - start_merge;
 
 
-        cout << endl<< endl << "Sorted array by merge" << endl;
+        cout << endl << endl << "Sorted array by merge" << endl;
         for (int i = 0; i < limit; ++i) {
             cout << arr_merge[i] << "    ";
         }
-        cout << endl << "Merge sorting time: "<< time_merge.count() << endl;
+        cout << endl << "Merge sorting time: " << time_merge.count() << endl;
 
         auto start_lib = high_resolution_clock::now();
         sort(arr.begin(), arr.end());
         auto this_lib = high_resolution_clock::now();
-        duration<double, std::milli> time_lib =this_lib - start_lib;
+        duration<double, std::milli> time_lib = this_lib - start_lib;
 
         cout << endl << "Sorted array by library" << endl;
 
         for (int i = 0; i < limit; ++i) {
             cout << arr[i] << "    ";
         }
-        cout << endl << "Library sorting time: "<< time_lib.count() << endl;
+        cout << endl << "Library sorting time: " << time_lib.count() << endl;
 
-        cout << endl << "Library sorting is "<< time_merge.count()/time_lib.count()<<"x faster." << endl;
+        cout << endl << "Library sorting is " << time_merge.count() / time_lib.count() << "x faster." << endl;
 
-        cout << endl << "To exit, type 'Exit'. If you want to continue, press Enter. " << endl;
+        cout << endl << "To exit, type 'Exit'. If you want to continue, type anything else. " << endl;
         getline(cin, ex);
     }
     return 0;
