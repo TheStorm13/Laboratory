@@ -5,33 +5,52 @@
 int get_size() {
     std::string str = "";
     bool state = true;
-    std::cout << "Enter the size matrix: ";
+    int  number;
+    std::size_t pos{};
 
+    std::cout << "Enter the size matrix: ";
     while (state) {
         getline(std::cin, str);
 
-        if (str.find_first_not_of("1234567890") != -1 || (str.empty()) || stoi(str) < 0) {
-            std::cout << "You entered the wrong value. Enter it again: " << std::endl;
-        } else
+        try {
+            number = stoi(str, &pos);
+
+            if (pos != str.size() || number < 2) {
+                throw std::invalid_argument("Argument is invalid\n");
+            }
             state = false;
+        }
+        catch (...) {
+            std::cout << "You entered the wrong value. Enter it again: ";
+        }
     }
-    return stoi(str);
+    return number;
 }
 
 int get_element(int size, int i, int j) {
     std::string str = "";
     bool state = true;
+    int  number;
+    std::size_t pos{};
+
     std::cout << "Enter the element " << i << "," << j << ": ";
 
     while (state) {
         getline(std::cin, str);
 
-        if (str.find_first_not_of("1234567890") != -1 || (str.empty()) || 1 > stoi(str) > size * size) {
-            std::cout << "You entered the wrong value. Enter it again: " << std::endl;
-        } else
+        try {
+            number = stoi(str, &pos);
+
+            if (pos != str.size() || number > size * size) {
+                throw std::invalid_argument("Argument is invalid\n");
+            }
             state = false;
+        }
+        catch (...) {
+            std::cout << "You entered the wrong value. Enter it again: ";
+        }
     }
-    return stoi(str);
+    return number;
 }
 
 std::vector<std::vector<int>> fill_matrix(int size, std::vector<std::vector<int>> matrix) {
