@@ -76,7 +76,6 @@ int get_element() {
             number = stoi(str, &pos);
 
             if (pos != str.size()) {
-                //std::cerr << "1\n";
                 throw std::invalid_argument("Argument is invalid. ");
             }
             state = false;
@@ -92,18 +91,23 @@ int get_element() {
 char get_method() {
     string str = "";
     bool state = true;
+
     std::cout << "Choose the method of filling the array. Random - \"r\", nearly sorted - \"n\", manually - \"m\": ";
+
     while (state) {
         getline(cin, str);
+
         if (!(str == "r" || str == "n" || str == "m") || str.empty()) {
             cout << "You entered the wrong value. Enter it again: ";
-        } else state = false;
+        } else
+            state = false;
     }
     return str == "r" ? 'r' : str == "n" ? 'n' : 'm';
 }
 
 vector<int> array_random(vector<int> array, int size_array) {
     srand(time(0));
+
     while (array.size() < size_array) {
         int random = rand() % 100;
         array.push_back(random);
@@ -212,8 +216,10 @@ int main() {
     using std::chrono::duration;
     using std::chrono::milliseconds;
     string ex = "";
+
     while (ex != "Exit") {
         vector<int> arr = {};
+
         int size_array = get_size();
         char method = get_method();
         arr = array_filling(arr, size_array, method);
