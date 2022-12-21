@@ -5,24 +5,6 @@
 using namespace std;
 
 // Проверка на целое число
-/*int check_integer() {
-    string str1 = "";
-    getline(cin, str1);// Ввод строки
-    // Проверка. Если строка содержит не только цифры, то ошибка
-    if (str1.find_first_not_of("1234567890") != -1) {
-        cout << "Вы ввели неправильное значение. Введите его еще раз:" << endl;
-        return check_integer();
-    } else {
-        int str_i = stoi(str1);// Преобразование строки в int
-        // Проверка на положительное число
-        if (str_i < 2) {
-            cout << "Вы ввели слишком маленькое значение. Введите его еще раз:" << endl;
-            return check_integer();
-        } else {
-            return str_i;
-        }
-    }
-}*/
 int check_integer() {
     std::string str = "";
     bool state = true;
